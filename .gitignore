@@ -1,0 +1,19 @@
+# Byte-compiled files
+*.pyc
+__pycache__/
+
+# C extensions
+*.so
+
+# Virtual environments
+env
+.venv/
+
+# Editor temporary files
+*.swp
+
+# Logs
+*.log
+
+# Cache files
+cache/
