@@ -10,8 +10,11 @@ import sys
 import argparse
 
 def get_cache_filename(title):
-    safe_title = title.replace('/', '_').replace('\\', '_').replace(':', '_').replace('*', '_').replace('?', '_').replace('"', '_').replace('<', '_').replace('>', '_').replace('|', '_')
-    return os.path.join('cache', f"{safe_title}.json")
+    # Construct Wikipedia URL from title
+    wiki_url = f'https://en.wikipedia.org/wiki/{title.replace(" ", "_")}'
+    # Make filename resemble the link structure using dashes as separator
+    safe_url = wiki_url.replace('https://', 'https-').replace('/', '-').replace(':', '-').replace('.', '-').replace('?', '-').replace('"', '-').replace('<', '-').replace('>', '-').replace('|', '-')
+    return os.path.join('cache', f"{safe_url}.json")
 
 def load_cached_dates(title):
     cache_file = get_cache_filename(title)
@@ -132,14 +135,25 @@ def plot_edit_history(dates, title, log_base=10, user_input=None):
     ax.xaxis.set_major_locator(locator)
     ax.xaxis.set_major_formatter(formatter)
     # Add command used
+    script_name = os.path.basename(sys.argv[0])
     if user_input:
-        cmd = f"python main.py {repr(user_input)} --log {log_base}"
+        if log_base != 10:
+            cmd = f"python {script_name} {repr(user_input)} --log {log_base}"
+        else:
+            cmd = f"python {script_name} {repr(user_input)}"
     else:
-        cmd = "python main.py (interactive input) --log 10"
+        cmd = f"python {script_name}"
     plt.figtext(0.01, 0.01, f'Command: {cmd}', fontsize=10, color='gray')
 
     plt.grid(True, axis='y', alpha=0.3)
     plt.tight_layout()
+
+    # Save figure with custom filename in plotGraphs folder
+    os.makedirs('plotGraphs', exist_ok=True)
+    safe_filename = os.path.join('plotGraphs', title.replace(" ", "_").replace("/", "_").replace("\\", "_") + "_edit_history.png")
+    plt.savefig(safe_filename, dpi=300, bbox_inches='tight', facecolor='black', edgecolor='black')
+    print(f"\nPlot saved as: {safe_filename}")
+
     plt.show()
 
 

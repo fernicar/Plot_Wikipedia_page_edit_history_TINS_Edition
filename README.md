@@ -97,13 +97,16 @@ dates = [
 ]
 ```
 
-Cache files are named using sanitized page titles:
+Cache files are named to resemble the full Wikipedia URL structure for better organization:
 
 ```python
-# Cache file naming
+# Cache file naming based on Wikipedia URL
 def get_cache_filename(title):
-    safe_title = title.replace('/', '_').replace('\\', '_').replace(':', '_').replace('*', '_').replace('?', '_').replace('"', '_').replace('<', '_').replace('>', '_').replace('|', '_')
-    return os.path.join('cache', f"{safe_title}.json")
+    # Construct Wikipedia URL from title
+    wiki_url = f'https://en.wikipedia.org/wiki/{title.replace(" ", "_")}'
+    # Make filename resemble the link structure using dashes as separator
+    safe_url = wiki_url.replace('https://', 'https-').replace('/', '-').replace(':', '-').replace('.', '-').replace('?', '-').replace('"', '-').replace('<', '-').replace('>', '-').replace('|', '-')
+    return os.path.join('cache', f"{safe_url}.json")
 ```
 
 ### Algorithms
@@ -241,13 +244,13 @@ python plot_wikipedia.py Oxygen --log 2
 - Safe file operations with proper error handling
 - No external dependencies except trusted libraries (requests, matplotlib)
 
+**Plot Export:** Automatically saves high-quality PNG images to the `plotGraphs/` folder with descriptive filenames for easy sharing and archiving.
+
 ## Extended Features (Optional)
 
 - Export plot data to CSV format
 - Generate multiple pages simultaneously
-- Add date range filtering
-- Support different plot styles (line charts, heatmaps)
-- Cache statistics reporting
+- Add date range filteripren- Cache statistics reporting
 - Batch processing mode
 
 ---
