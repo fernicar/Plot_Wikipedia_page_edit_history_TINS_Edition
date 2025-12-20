@@ -170,7 +170,7 @@ if __name__ == "__main__":
         user_input = input("Enter Wikipedia page title or URL: ").strip()
 
     if "wikipedia.org" in user_input:
-        title = user_input.split("/wiki/")[-1].split("#")[0].replace("_", " ")
+        title = user_input.split("/wiki/")[-1].split("#")[0]
     else:
         title = user_input.replace(" ", "_")
 
