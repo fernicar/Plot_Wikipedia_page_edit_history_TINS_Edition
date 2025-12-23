@@ -174,5 +174,7 @@ if __name__ == "__main__":
     else:
         title = user_input.replace(" ", "_")
 
+    title = title.strip("'\"")
+
     dates = get_revision_dates(title)
     plot_edit_history(dates, title.replace("_", " "), args.log, user_input)
